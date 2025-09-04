@@ -6,6 +6,6 @@
 @source '../**/*.js';
 
 @plugin "daisyui" {
-    themes: dim --default;
+    themes: dim --default, cupcake --light;
 }
 @custom-variant dark (&:where([data-theme=dim], [data-theme=dim] *));
