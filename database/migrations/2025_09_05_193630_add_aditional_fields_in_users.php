@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('profile_photo')->nullable();
             $table->string('role')->nullable();
+            $table->string('location')->nullable();
+            $table->string('phone_no')->nullable();
+            $table->text('bio', 500)->nullable();
         });
     }
 
@@ -22,9 +25,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('user', function (Blueprint $table) {
-            $table->string('profile_photo')->nullable();
-            $table->string('role')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 };
