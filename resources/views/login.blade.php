@@ -10,12 +10,12 @@
 
                 <fieldset class="w-xs space-y-2">
 
-                    <label class="label">Email</label>
+                    <label class="label block">Email</label>
                     <input type="email" class="input" placeholder="email@example.com" name="email"
                            value="{{ old('email') }}"/>
                     <span class="text-red-500">{{ implode($errors->get('email')) }}</span>
 
-                    <label class="label">Password</label>
+                    <label class="label block">Password</label>
                     <input type="password" class="input" placeholder="* * * * * * * * *" name="password"/>
                     <span class="text-red-500">{{ implode($errors->get('password')) }}</span>
 
