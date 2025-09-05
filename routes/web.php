@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,8 +13,11 @@ Route::post('/register', [\App\Http\Controllers\RegisteredUserController::class,
 Route::get('/login', [\App\Http\Controllers\AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [\App\Http\Controllers\AuthenticatedSessionController::class, 'store'])->middleware('guest');
 
-Route::get('/login', fn () => view('login'))->name('login');
-Route::get('/register', fn () => view('register'))->name('register');
-Route::get('/register', [\App\Http\Controllers\RegisteredUserController::class, 'create'])->name('register');
-Route::post('/register', [\App\Http\Controllers\RegisteredUserController::class, 'store']);
+// User Profile Routes
+Route::get('/user', [UserProfileController::class, 'show'])
+    ->middleware('auth')
+    ->name('user.show');
 
+Route::put('user/profile/photo/', [UserProfileController::class, 'updateProfilePhoto'])->middleware('auth')->name('user.profile.photo');
+
+Route::put('user/profile', [UserProfileController::class, 'updateProfile'])->middleware('auth')->name('user.profile');
