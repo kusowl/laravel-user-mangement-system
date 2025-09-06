@@ -27,6 +27,12 @@ class UserProfileController extends Controller
             $data['profile_photo'] = $request->file('profile_photo')->store('profile_photos', 'public');
         }
         Auth::user()->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Photo updated successfully!',
+            'photo_url' => asset('storage/'.$data['profile_photo']),
+        ]);
     }
 
     public function updateProfile(Request $request)

@@ -50,6 +50,7 @@
                                 <div class="avatar">
                                     <div class="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                         <img
+                                            id="profile-photo"
                                             src="{{asset('storage/'.$user->profile_photo)}}"
                                             alt="Profile"/>
                                     </div>
@@ -262,7 +263,6 @@
             </div>
         </div>
     </dialog>
-
     <script>
         // JavaScript functions for interactivity
         function logout() {
@@ -344,7 +344,14 @@
 
                         const response = await fetch(url, options)
                         if (response.ok) {
-                            window.location.reload()
+                            let result = await response.json();
+                            console.log(result)
+                            const profileImage = document.getElementById('profile-photo');
+                            profileImage.src = result.photo_url + '?t=' + new Date().getTime(); // Add timestamp to prevent caching
+
+                            showSuccessToast(result.message || 'Photo updated successfully!');
+                        } else {
+                            showErrorToast('Something went wrong')
                         }
 
                     } catch (error) {
@@ -356,4 +363,5 @@
         }
 
     </script>
+    @include('components.toastify')
 </x-layout>
