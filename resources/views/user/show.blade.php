@@ -300,7 +300,7 @@
                 url = "{{route('user.profile')}}";
                 const formData = new FormData();
                 formData.append('_token', '{{csrf_token()}}');
-                formData.append('_method', 'PUT');  // This tells Laravel it's a PUT request
+                formData.append('_method', 'PUT');
                 formData.append('name', name.value);
                 formData.append('email', email.value);
                 formData.append('location', location.value || '');
@@ -332,27 +332,24 @@
                 const url = "{{ route('user.profile.photo') }}";
 
                 if (file) {
+                    const formData = new FormData();
+                    formData.append('profile_photo', file)
+                    formData.append('_token', '{{csrf_token()}}');
+                    formData.append('_method', 'PUT');
                     try {
                         const options = {
-                            method: 'PUT',
-                            body: JSON.stringify(
-                                {
-                                    'profile_photo': file,
-                                    '_token': "{{ csrf_token() }}"
-                                }
-                            ),
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
+                            method: 'POST',
+                            body: formData,
                         };
 
-                        const response = await fetch(url, options);
-                        console.log(response)
+                        const response = await fetch(url, options)
+                        if (response.ok) {
+                            window.location.reload()
+                        }
 
                     } catch (error) {
                         console.log(error)
                     }
-                    alert('Photo selected: ' + file.name);
                 }
             };
             input.click();
