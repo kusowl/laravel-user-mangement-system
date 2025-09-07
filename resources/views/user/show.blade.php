@@ -12,133 +12,73 @@
             </div>
         </div>
 
-        <!-- Quick Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="stat bg-base-200 rounded-2xl ">
-                <div class="stat-title">Last Login</div>
-                <div class="stat-value text-primary text-lg">2 hours ago</div>
-                <div class="stat-desc">Today at 2:30 PM</div>
-            </div>
+            <div class="card col-span-3 bg-base-200 h-full">
+                <div class="card-body ">
+                    <h2 class="card-title text-xl pb-4 mb-4 justify-center border-b border-white/20">
+                        Profile Details
+                    </h2>
 
-
-            <div class="stat bg-base-200 rounded-2xl ">
-                <div class="stat-title">Sessions</div>
-                <div class="stat-value text-accent text-lg">23</div>
-                <div class="stat-desc">This month</div>
-            </div>
-
-            <div class="stat bg-base-200 rounded-2xl ">
-                <div class="stat-title">Member Since</div>
-                <div class="stat-value text-info text-lg">2 years</div>
-                <div class="stat-desc">January 2023</div>
-            </div>
-        </div>
-
-        <!-- Main Dashboard Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 grid-row-1 gap-6">
-            <!-- Profile Section -->
-            <div class="lg:col-span-2">
-                <div class="card bg-base-200 border-base-300 h-full">
-                    <div class="card-body">
-                        <h2 class="card-title text-2xl mb-6">
-                            <i class="fas fa-user text-primary"></i>
-                            Profile Information
-                        </h2>
-
-                        <div class="flex flex-col md:flex-row gap-10 items-center">
-                            <div class="flex-shrink-0">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="flex justify-center items-center">
+                            <article>
                                 <div class="avatar">
-                                    <div class="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img
-                                            id="profile-photo"
-                                            src="{{asset('storage/'.$user->profile_photo)}}"
-                                            alt="Profile"/>
+                                    <div
+                                        class="ring-primary ring-offset-base-100 w-36 rounded-full ring-2 ring-offset-2">
+                                        <img src="{{\Illuminate\Support\Facades\Storage::url($user->profile_photo)}}"/>
                                     </div>
                                 </div>
+                            </article>
+                        </div>
+                        <div class="flex flex-col gap-6 lg:col-span-2">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <x-mini-card title="Full Name" content="{{ $user->name }}"/>
 
+                                <x-mini-card title="Email" content="{{ $user->email }}"/>
+
+                                <x-mini-card title="Mobile No" content="{{ $user->phone_no }}"/>
+
+                                <x-mini-card title="Location" content="{{ $user->location }}"/>
                             </div>
-
-                            <div class="flex-grow">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Full Name</span>
-                                        </label>
-                                        <input type="text" value="{{$user->name}}" class="input input-bordered"
-                                               readonly/>
-                                    </div>
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Email</span>
-                                        </label>
-                                        <input type="email" value="{{$user->email}}" class="input input-bordered"
-                                               readonly/>
-                                    </div>
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Phone</span>
-                                        </label>
-                                        <input type="text" value="{{$user->phone_no}}" class="input input-bordered"
-                                               readonly/>
-                                    </div>
-
-                                    <div class="form-control">
-                                        <label class="label">
-                                            <span class="label-text font-semibold">Location</span>
-                                        </label>
-                                        <input type="text" value="{{$user->location}}" class="input input-bordered"
-                                               readonly/>
-                                    </div>
-
-                                    <div class="form-control md:col-span-2">
-                                        <label class="label block">
-                                            <span class="label-text font-semibold">Bio</span>
-                                        </label>
-                                        <textarea class="input input-bordered w-full" readonly>{{$user->bio}}</textarea>
-                                    </div>
-                                </div>
-
+                            <div class="bg-base-100 rounded-lg">
+                                <x-mini-card title="Bio" content="{{$user->bio}}"/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Quick Actions & Settings -->
-            <div>
-                <!-- Quick Actions Card -->
-                <div class="card bg-base-200 h-full">
-                    <div class="card-body">
-                        <h2 class="card-title text-xl mb-4">
-                            <i class="fas fa-bolt text-warning"></i>
-                            Quick Actions
-                        </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 grid-row-1 gap-6">
+            <!-- Quick Actions Card -->
+            <div class="card bg-base-200 h-full col-span-3">
+                <div class="card-body">
+                    <h2 class="card-title text-xl pb-4 mb-4 justify-center border-b border-white/20">
+                        Quick Actions
+                    </h2>
 
-                        <div class="space-y-5">
+                    <div class="flex flex-col space-y-4 md:flex-row justify-evenly">
 
-                            <button class="btn btn-soft btn-block btn-primary justify-start" onclick="changePhoto()">
-                                <i class="fas fa-image"></i>
-                                Update Profile Photo
-                            </button>
+                        <button class="btn btn-soft btn-primary justify-start" onclick="changePhoto()">
+                            <i class="fas fa-image"></i>
+                            Update Profile Photo
+                        </button>
 
-                            <button class="btn btn-soft btn-block btn-accent justify-start" onclick="editProfile()">
-                                <i class="fas fa-user-edit"></i>
-                                Edit Profile Details
-                            </button>
+                        <button class="btn btn-soft btn-accent justify-start" onclick="editProfile()">
+                            <i class="fas fa-user-edit"></i>
+                            Edit Profile Details
+                        </button>
 
-                            <button class="btn btn-soft btn-block btn-warning justify-start" onclick="changePassword()">
-                                <i class="fas fa-key"></i>
-                                Change Password
-                            </button>
+                        <button class="btn btn-soft btn-warning justify-start" onclick="changePassword()">
+                            <i class="fas fa-key"></i>
+                            Change Password
+                        </button>
 
-                            <button class="btn btn-soft btn-block btn-error justify-start" onclick="changePhoto()">
-                                <i class="fas fa-image"></i>
-                                Delete Account
-                            </button>
+                        <button class="btn btn-soft btn-error justify-start" onclick="changePhoto()">
+                            <i class="fas fa-image"></i>
+                            Delete Account
+                        </button>
 
-                        </div>
                     </div>
                 </div>
             </div>
