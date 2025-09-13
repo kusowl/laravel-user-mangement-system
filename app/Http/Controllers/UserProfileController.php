@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -9,6 +10,31 @@ use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = User::query();
+        if ($search_key = $request->input('search_key')) {
+            $query->where(function ($q) use ($search_key) {
+                $q->where('name', 'like', "%{$search_key}%")
+                    ->orWhere('email', 'like', "%{$search_key}%");
+            });
+        }
+
+        if ($role = $request->input('role')) {
+            $query->where('role', $role);
+        }
+
+        if ($sortBy = $request->input('sort')) {
+            $query->orderBy($sortBy, 'asc');
+        } else {
+            $query->latest();
+        }
+
+        $users = $query->paginate('20');
+
+        return view('user.index', compact('users'));
+    }
+
     public function show()
     {
         $user = Auth::user();

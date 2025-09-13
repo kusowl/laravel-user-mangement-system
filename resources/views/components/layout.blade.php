@@ -15,7 +15,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 @endif
 </head>
-<body data-theme='dim' class=" flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+<body data-theme='dim' class=" flex p-6 lg:p-8 items-center min-h-screen flex-col">
 {{ $slot }}
 </body>
 </html>
