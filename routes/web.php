@@ -18,6 +18,6 @@ Route::get('/user', [UserProfileController::class, 'show'])
     ->middleware('auth')
     ->name('user.show');
 
-Route::put('user/profile/photo/', [UserProfileController::class, 'updateProfilePhoto'])->middleware('auth')->name('user.profile.photo');
-
 Route::put('user/profile', [UserProfileController::class, 'updateProfile'])->middleware('auth')->name('user.profile');
+Route::put('user/profile/photo/', [UserProfileController::class, 'updateProfilePhoto'])->middleware('auth')->name('user.profile.photo');
+Route::put('user/profile/password', [UserProfileController::class, 'updatePassword'])->middleware('auth')->name('user.profile.password');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
@@ -25,13 +26,18 @@ class UserProfileController extends Controller
         if ($request->hasFile('profile_photo')) {
             Storage::disk('public')->delete(Auth::user()->profile_photo);
             $data['profile_photo'] = $request->file('profile_photo')->store('profile_photos', 'public');
+            Auth::user()->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Photo updated successfully!',
+                'photo_url' => asset('storage/'.$data['profile_photo']),
+            ]);
         }
-        Auth::user()->update($data);
 
         return response()->json([
-            'success' => true,
-            'message' => 'Photo updated successfully!',
-            'photo_url' => asset('storage/'.$data['profile_photo']),
+            'sucess' => false,
+            'message' => 'No Photo file found',
         ]);
     }
 
@@ -44,7 +50,41 @@ class UserProfileController extends Controller
             'phone_no' => 'nullable',
             'bio' => 'nullable',
         ]);
+        if (Auth::user()->update($validatedData)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile Updated',
+            ]);
+        } else {
+            return response()->json([
+                'succcess' => false,
+                'message' => 'Profile cannot be updated',
+            ]);
+        }
+    }
 
-        Auth::user()->update($validatedData);
+    public function updatePassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required',
+        ]);
+
+        // Check if the current password is correct
+        if (Hash::check($validatedData['current_password'], Auth::user()->password)) {
+            Auth::user()->update([
+                'password' => bcrypt($validatedData['new_password']),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Password updated',
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Current password is wrong',
+        ]);
     }
 }

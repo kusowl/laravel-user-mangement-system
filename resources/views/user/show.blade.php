@@ -1,47 +1,48 @@
 <x-layout>
-    <div class="container mx-auto p-6 max-w-7xl">
+    <div class="container mx-auto max-w-7xl p-6">
         <!-- Welcome Section -->
         <div class="mb-8">
-            <div class="hero bg-gradient-to-r from-info to-success rounded-2xl text-primary-content">
-                <div class="hero-content text-center py-12">
+            <div class="hero from-info to-success text-primary-content rounded-2xl bg-gradient-to-r">
+                <div class="hero-content py-12 text-center">
                     <div class="max-w-lg">
-                        <h1 class="mb-5 text-4xl font-bold">Welcome back, {{$user->name}} !</h1>
+                        <h1 class="mb-5 text-4xl font-bold">Welcome back, {{ $user->name }} !</h1>
                         <p class="mb-5">Manage your account and preferences from your personalized dashboard.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="card col-span-3 bg-base-200 h-full">
-                <div class="card-body ">
-                    <h2 class="card-title text-xl pb-4 mb-4 justify-center border-b border-white/20">
+        <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div class="card bg-base-200 col-span-3 h-full">
+                <div class="card-body">
+                    <h2 class="card-title mb-4 justify-center border-b border-white/20 pb-4 text-xl">
                         Profile Details
                     </h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="flex justify-center items-center">
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div class="flex items-center justify-center">
                             <article>
                                 <div class="avatar">
                                     <div
                                         class="ring-primary ring-offset-base-100 w-36 rounded-full ring-2 ring-offset-2">
-                                        <img src="{{\Illuminate\Support\Facades\Storage::url($user->profile_photo)}}"/>
+                                        <img id="profile-photo"
+                                            src="{{ \Illuminate\Support\Facades\Storage::url($user->profile_photo) }}" />
                                     </div>
                                 </div>
                             </article>
                         </div>
                         <div class="flex flex-col gap-6 lg:col-span-2">
-                            <div class="flex flex-col md:flex-row gap-6">
-                                <x-mini-card title="Full Name" content="{{ $user->name }}"/>
+                            <div class="flex flex-col gap-6 md:flex-row">
+                                <x-mini-card title="Full Name" content="{{ $user->name }}" />
 
-                                <x-mini-card title="Email" content="{{ $user->email }}"/>
+                                <x-mini-card title="Email" content="{{ $user->email }}" />
 
-                                <x-mini-card title="Mobile No" content="{{ $user->phone_no }}"/>
+                                <x-mini-card title="Mobile No" content="{{ $user->phone_no }}" />
 
-                                <x-mini-card title="Location" content="{{ $user->location }}"/>
+                                <x-mini-card title="Location" content="{{ $user->location }}" />
                             </div>
                             <div class="bg-base-100 rounded-lg">
-                                <x-mini-card title="Bio" content="{{$user->bio}}"/>
+                                <x-mini-card title="Bio" content="{{ $user->bio }}" />
                             </div>
                         </div>
                     </div>
@@ -49,15 +50,15 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 grid-row-1 gap-6">
+        <div class="grid-row-1 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <!-- Quick Actions Card -->
-            <div class="card bg-base-200 h-full col-span-3">
+            <div class="card bg-base-200 col-span-3 h-full">
                 <div class="card-body">
-                    <h2 class="card-title text-xl pb-4 mb-4 justify-center border-b border-white/20">
+                    <h2 class="card-title mb-4 justify-center border-b border-white/20 pb-4 text-xl">
                         Quick Actions
                     </h2>
 
-                    <div class="flex flex-col space-y-4 md:flex-row justify-evenly">
+                    <div class="flex flex-col justify-evenly space-y-4 md:flex-row">
 
                         <button class="btn btn-soft btn-primary justify-start" onclick="changePhoto()">
                             <i class="fas fa-image"></i>
@@ -88,7 +89,7 @@
     <!-- Logout Confirmation Modal -->
     <dialog id="logout_modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg text-error">
+            <h3 class="text-error text-lg font-bold">
                 <i class="fas fa-exclamation-triangle"></i>
                 Confirm Logout
             </h3>
@@ -108,39 +109,39 @@
     <!-- Profile Edit Modal -->
     <dialog id="profile-modal" class="modal">
         <div class="modal-box w-11/12 max-w-2xl">
-            <h3 class="font-bold text-lg mb-4">
+            <h3 class="mb-4 text-lg font-bold">
                 <i class="fas fa-user-edit text-primary"></i>
                 Edit Profile
             </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="profile-update-details">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2" id="profile-update-details">
 
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Name</span>
                     </label>
-                    <input type="text" name="name" value="{{$user->name}}" class="input input-bordered"/>
+                    <input type="text" name="name" value="{{ $user->name }}" class="input input-bordered" />
                 </div>
 
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Email</span>
                     </label>
-                    <input type="email" name="email" value="{{$user->email}}" class="input input-bordered"/>
+                    <input type="email" name="email" value="{{ $user->email }}" class="input input-bordered" />
                 </div>
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Location</span>
                     </label>
-                    <input type="text" name="location" value="{{$user->location ?? ''}}"
-                           class="input input-bordered"/>
+                    <input type="text" name="location" value="{{ $user->location ?? '' }}"
+                        class="input input-bordered" />
                 </div>
 
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Phone</span>
                     </label>
-                    <input type="text" name="phone_no" value="{{$user->phone_no ?? ''}}"
-                           class="input input-bordered"/>
+                    <input type="text" name="phone_no" value="{{ $user->phone_no ?? '' }}"
+                        class="input input-bordered" />
                 </div>
             </div>
 
@@ -148,7 +149,7 @@
                 <label class="label block">
                     <span class="label-text">Bio</span>
                 </label>
-                <textarea name="bio" class="textarea textarea-bordered h-24 w-full">{{$user->bio ?? ''}}</textarea>
+                <textarea name="bio" class="textarea textarea-bordered h-24 w-full">{{ $user->bio ?? '' }}</textarea>
             </div>
 
             <div class="modal-action">
@@ -165,44 +166,46 @@
     <!-- Change Password Modal -->
     <dialog id="password_modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg mb-4">
+            <h3 class="mb-4 text-lg font-bold">
                 <i class="fas fa-key text-secondary"></i>
                 Change Password
             </h3>
 
             <div class="space-y-4">
                 <div class="form-control">
-                    <label class="label">
+                    <label class="label block">
                         <span class="label-text">Current Password</span>
                     </label>
-                    <input type="password" class="input input-bordered"/>
+                    <input type="password" name="current_password" class="input input-bordered" />
                 </div>
 
                 <div class="form-control">
-                    <label class="label">
+                    <label class="label block">
                         <span class="label-text">New Password</span>
                     </label>
-                    <input type="password" class="input input-bordered"/>
+                    <input type="password" name="new_password" class="input input-bordered" />
                 </div>
 
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Confirm New Password</span>
                     </label>
-                    <input type="password" class="input input-bordered"/>
+                    <input type="password" name="password_confirmation"class="input input-bordered" />
                 </div>
             </div>
 
             <div class="modal-action">
                 <form method="dialog">
                     <button class="btn mr-2">Cancel</button>
-                    <button class="btn btn-secondary">
-                        Update Password
-                    </button>
                 </form>
+
+                <button onclick="updatePassword()" class="btn btn-secondary">
+                    Update Password
+                </button>
             </div>
         </div>
     </dialog>
+    @include('components.toastify')
     <script>
         // JavaScript functions for interactivity
         function logout() {
@@ -211,7 +214,7 @@
 
         function performLogout() {
             // Here you would redirect to logout route
-            {{--// window.location.href = "{{ route('logout') }}";--}}
+            {{-- // window.location.href = "{{ route('logout') }}"; --}}
             alert('Redirecting to logout...');
         }
 
@@ -237,24 +240,27 @@
             }
 
             if (flag) {
-                url = "{{route('user.profile')}}";
-                const formData = new FormData();
-                formData.append('_token', '{{csrf_token()}}');
-                formData.append('_method', 'PUT');
-                formData.append('name', name.value);
-                formData.append('email', email.value);
-                formData.append('location', location.value || '');
-                formData.append('bio', bio.value || '');
-                formData.append('phone_no', phone_no.value || '');
+                url = "{{ route('user.profile') }}";
+                try {
+                    const response = await axios.put(url, {
+                        name: name.value,
+                        email: email.value,
+                        location: location.value || '',
+                        bio: bio.value || '',
+                        phone_no: phone_no || ''
+                    });
 
-                let options = {
-                    method: "POST",
-                    body: formData,
-                };
-                const response = await fetch(url, options)
-                if (response.ok) {
-                    window.location.reload()
+                    const data = response.data;
+                    if (data.success) {
+                        showSuccessToast(data.message);
+                    } else {
+                        showErrorToast(data.message)
+                    }
+                } catch (error) {
+                    console.error(error);
+                    showErrorToast('Unknow error ocuured');
                 }
+
             }
         }
 
@@ -267,41 +273,81 @@
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'image/*';
-            input.onchange = async function (e) {
+            input.onchange = async function(e) {
                 const file = e.target.files[0];
                 const url = "{{ route('user.profile.photo') }}";
-
+                const formData = new FormData();
+                formData.append('profile_photo', file);
+                formData.append('_token', "{{ csrf_token() }}");
+                formData.append('_method', 'PUT');
                 if (file) {
-                    const formData = new FormData();
-                    formData.append('profile_photo', file)
-                    formData.append('_token', '{{csrf_token()}}');
-                    formData.append('_method', 'PUT');
                     try {
-                        const options = {
-                            method: 'POST',
-                            body: formData,
-                        };
 
-                        const response = await fetch(url, options)
-                        if (response.ok) {
-                            let result = await response.json();
-                            console.log(result)
+                        const response = await axios.post(url, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            }
+                        });
+                        const data = response.data;
+                        if (data.success) {
                             const profileImage = document.getElementById('profile-photo');
-                            profileImage.src = result.photo_url + '?t=' + new Date().getTime(); // Add timestamp to prevent caching
-
-                            showSuccessToast(result.message || 'Photo updated successfully!');
+                            profileImage.src = data.photo_url + '?t=' + new Date()
+                                .getTime(); // Add timestamp to prevent caching
+                            showSuccessToast(data.message || 'Photo updated successfully!');
                         } else {
-                            showErrorToast('Something went wrong')
+                            showErrorToast(data.message)
                         }
 
                     } catch (error) {
-                        console.log(error)
+                        console.log(error);
+                        showErrorToast('Unknow error ocuured');
                     }
                 }
             };
             input.click();
         }
 
+        async function updatePassword() {
+            const current_password = document.querySelector("#password_modal input[name='current_password']");
+            const new_password = document.querySelector("#password_modal input[name='new_password']");
+            const confirm_password = document.querySelector("#password_modal input[name='password_confirmation']");
+            let flag = false;
+            // validations
+            if (current_password.value === '') {
+                showErrorToast('Current password is required');
+                flag = true;
+            }
+            if (new_password.value === '') {
+                showErrorToast('New password is required');
+                flag = true;
+            }
+            if (confirm_password.value === '') {
+                showErrorToast('Confirm password is required');
+                flag = true;
+            }
+            if (new_password.value !== confirm_password.value) {
+                showErrorToast('Passwords do not match');
+                flag = true;
+            }
+
+            if (!flag) {
+                const url = "{{ route('user.profile.password') }}";
+                try {
+                    const response = await axios.put(url, {
+                        new_password: new_password.value,
+                        current_password: current_password.value
+                    });
+                    const data = response.data;
+                    if (data.success) {
+                        showSuccessToast(data.message);
+                    } else {
+                        showErrorToast(data.message);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    showErrorToast('Unknow error ocuured');
+                }
+            }
+        }
     </script>
-    @include('components.toastify')
 </x-layout>
