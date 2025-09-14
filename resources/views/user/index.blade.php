@@ -2,6 +2,7 @@
     @php
         $adminRole = \App\UserRoles::Admin->value;
         $userRole = \App\UserRoles::User->value;
+        $currentUser = Auth::user();
     @endphp
     <div class="container">
 
@@ -18,8 +19,10 @@
                 <!-- Role Filter -->
                 <select name="role" class="select select-bordered w-full sm:w-40">
                     <option value="">All Roles</option>
-                    <option value="{{$adminRole}}" {{ request('role') == $adminRole ? 'selected' : '' }}>Admin</option>
-                    <option value="{{$userRole}}" {{ request('role') == $userRole ? 'selected' : '' }}>User</option>
+                    <option value="{{ $adminRole }}" {{ request('role') == $adminRole ? 'selected' : '' }}>Admin
+                    </option>
+                    <option value="{{ $userRole }}" {{ request('role') == $userRole ? 'selected' : '' }}>User
+                    </option>
                 </select>
 
                 <!-- Sort -->
@@ -41,7 +44,9 @@
                         <th class="text-left">Name</th>
                         <th class="text-left">Email</th>
                         <th class="text-left">Role</th>
-                        <th class="text-center">Actions</th>
+                        @canany(['delete', 'disable'], $currentUser)
+                            <th class="text-center">Actions</th>
+                        @endcanany
                     </tr>
                 </thead>
                 <tbody>
@@ -55,20 +60,24 @@
                                     {{ ucfirst($user->role) }}
                                 </span>
                             </td>
-                            <td class="flex justify-center gap-2">
+                            <td class="flex justify-end gap-2">
                                 <!-- Deactivate -->
-                                <form action="{{--  route('users.deactivate', $user->id) --}}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button class="btn btn-sm btn-warning">Deactivate</button>
-                                </form>
-                                <!-- Delete -->
-                                <form action="{{-- route('users.destroy', $user->id) --}}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-error">Delete</button>
-                                </form>
+                                @can('disable', $currentUser)
+                                    <form action="{{ route('user.deactivate', $user->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="btn btn-sm btn-warning">Deactivate</button>
+                                    </form>
+                                @endcan
+                                @can('delete', $currentUser)
+                                    <!-- Delete -->
+                                    <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-error">Delete</button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                     @empty

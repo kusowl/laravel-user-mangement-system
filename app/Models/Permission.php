@@ -14,6 +14,6 @@ class Permission extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'permission_user', 'permission_id', 'user_id');
     }
 }

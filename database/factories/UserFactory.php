@@ -30,9 +30,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'role' => array_rand(array_column(UserRoles::cases(), 'values')),
+            'role' => fake()->randomElement(array_column(UserRoles::cases(), 'value')),
             'location' => fake()->city(),
-            'phone_no' => random_int(1111111111, 99999999),
+            'phone_no' => fake()->phoneNumber(),
             'bio' => fake()->realText(500),
         ];
     }

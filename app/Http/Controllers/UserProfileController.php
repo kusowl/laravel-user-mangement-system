@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +31,7 @@ class UserProfileController extends Controller
             $query->latest();
         }
 
-        $users = $query->paginate('20');
+        $users = $query->paginate('10');
 
         return view('user.index', compact('users'));
     }
@@ -112,5 +113,44 @@ class UserProfileController extends Controller
             'success' => false,
             'message' => 'Current password is wrong',
         ]);
+    }
+
+    public function deactivate(Request $request, int $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            ds($user);
+            $user->isActive = false;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User Deactivated',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function delete(Request $request, int $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            ds($user);
+            $user->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User Deleted',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }
