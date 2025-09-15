@@ -59,27 +59,30 @@
                     </h2>
 
                     <div class="flex flex-col justify-evenly space-y-4 md:flex-row">
-
-                        <button class="btn btn-soft btn-primary justify-start" onclick="changePhoto()">
-                            <i class="fas fa-image"></i>
+                        @if ($user->isAdmin())
+                            <x-button>
+                                <a href="{{ route('user.index') }}">User List </a>
+                            </x-button>
+                        @endif
+                        <x-button class="btn-primary" onclick="changePhoto()">
                             Update Profile Photo
-                        </button>
+                        </x-button>
 
-                        <button class="btn btn-soft btn-accent justify-start" onclick="editProfile()">
-                            <i class="fas fa-user-edit"></i>
+                        <x-button class="btn-accent" onclick="editProfile()">
                             Edit Profile Details
-                        </button>
+                        </x-button>
 
-                        <button class="btn btn-soft btn-warning justify-start" onclick="changePassword()">
-                            <i class="fas fa-key"></i>
+                        <x-button class="btn-warning" onclick="changePassword()">
                             Change Password
-                        </button>
+                        </x-button>
 
-                        <button class="btn btn-soft btn-error justify-start" onclick="changePhoto()">
-                            <i class="fas fa-image"></i>
-                            Delete Account
-                        </button>
-
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <x-button class="btn-error w-full">
+                                Logout
+                            </x-button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -190,7 +193,7 @@
                     <label class="label">
                         <span class="label-text">Confirm New Password</span>
                     </label>
-                    <input type="password" name="password_confirmation"class="input input-bordered" />
+                    <input type="password" name="password_confirmation"class=" input input-bordered" />
                 </div>
             </div>
 

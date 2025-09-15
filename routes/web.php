@@ -15,6 +15,9 @@ Route::post('/register', [\App\Http\Controllers\RegisteredUserController::class,
 Route::get('/login', [\App\Http\Controllers\AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [\App\Http\Controllers\AuthenticatedSessionController::class, 'store'])->middleware('guest');
 
+Route::delete('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
+/* <---------- User Routes ----------> */
+
 Route::get('/user/index', [UserProfileController::class, 'index'])->name('user.index');
 Route::get('/user', [UserProfileController::class, 'show'])
     ->middleware('auth')

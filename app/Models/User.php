@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\UserPermissions;
+use App\UserRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -61,5 +62,10 @@ class User extends Authenticatable
         return $this->permissions()
             ->where('name', $permission->value)
             ->exists();
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == UserRoles::Admin->value;
     }
 }
