@@ -120,6 +120,7 @@ class UserProfileController extends Controller
 
     public function deactivate(Request $request, int $id)
     {
+        Gate::authorize('disable', Auth::user());
         $response = [];
         try {
             $user = User::findOrFail($id);
@@ -142,6 +143,7 @@ class UserProfileController extends Controller
 
     public function activate(Request $request, int $id)
     {
+        Gate::authorize('activate', Auth::user());
         try {
             $user = User::findOrFail($id);
             $user->isActive = true;
@@ -161,22 +163,16 @@ class UserProfileController extends Controller
         }
     }
 
-    public function delete(Request $request, int $id)
+    public function destroy(Request $request, int $id)
     {
+        Gate::authorize('delete', Auth::user());
         try {
             $user = User::findOrFail($id);
             ds($user);
             $user->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'User Deleted',
-            ]);
+            return back();
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ]);
+            return back()->withError('Cannot find the user');
         }
     }
 }
