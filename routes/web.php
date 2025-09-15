@@ -36,5 +36,6 @@ Route::middleware(['auth', isAdmin::class])->group(function () {
      * As Only admin who has perimission should be able to deactivate||delete a user, it's a perfect use case of policy
      */
     Route::patch('/user/{id}/deactivate', [UserProfileController::class, 'deactivate'])->middleware('auth')->name('user.deactivate');
+    Route::patch('/user/{id}/activate', [UserProfileController::class, 'activate'])->middleware('auth')->name('user.activate');
     Route::delete('/user/{id}/delete', [UserProfileController::class, 'destory'])->middleware('auth')->name('user.destroy');
 });

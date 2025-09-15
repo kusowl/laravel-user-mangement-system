@@ -12,6 +12,11 @@ class UserPolicy
         return $user->hasPermission(UserPermissions::DisableUser);
     }
 
+    public function activate(User $user, User $model)
+    {
+        return $user->hasPermission(UserPermissions::ActivateUser);
+    }
+
     /**
      * Determine whether the user can delete the model.
      */

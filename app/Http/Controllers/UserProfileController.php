@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Exception;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -119,16 +120,39 @@ class UserProfileController extends Controller
 
     public function deactivate(Request $request, int $id)
     {
+        $response = [];
         try {
             $user = User::findOrFail($id);
-            ds($user);
             $user->isActive = false;
-            $user->save();
+            $response['success'] = $user->save();
+            $response['success'] ? $response['message'] = 'User Deactivated' : 'Error while user deactivation';
+            if (Gate::allows('activate', Auth::user())) {
+                $response['canActivate'] = true;
+                $response['url'] = route('user.activate', $user->id);
+            }
 
+            return response()->json($response);
+        } catch (Exception $e) {
             return response()->json([
-                'success' => true,
-                'message' => 'User Deactivated',
+                'success' => false,
+                'message' => $e->getMessage(),
             ]);
+        }
+    }
+
+    public function activate(Request $request, int $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->isActive = true;
+            $response['success'] = $user->save();
+            $response['success'] ? $response['message'] = 'User Activated' : 'Error while user Activation';
+            if (Gate::allows('disable', Auth::user())) {
+                $response['canDisable'] = true;
+                $response['url'] = route('user.deactivate', $user->id);
+            }
+
+            return response()->json($response);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,

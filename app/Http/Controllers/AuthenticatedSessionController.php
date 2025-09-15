@@ -20,6 +20,10 @@ class AuthenticatedSessionController extends Controller
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            if (! Auth::user()->isActive) {
+                Auth::logout();
+                abort(403);
+            }
 
             return to_route('user.show');
         }
