@@ -51,7 +51,9 @@ class UserProfileController extends Controller
         $data = [];
         // Delete previous photo and update it
         if ($request->hasFile('profile_photo')) {
-            Storage::disk('public')->delete(Auth::user()->profile_photo);
+            if (Auth::user()->profile_photo != '') {
+                Storage::disk('public')->delete(Auth::user()->profile_photo);
+            }
             $data['profile_photo'] = $request->file('profile_photo')->store('profile_photos', 'public');
             Auth::user()->update($data);
 

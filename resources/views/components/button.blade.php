@@ -1,3 +1,4 @@
 <button {{ $attributes->merge(['class' => 'btn btn-soft justify-center']) }}>
-    {{ $slot }}
+    <span class="button-text">{{ $slot }}</span>
+    <span class="loading loading-spinner loading-xs hidden"></span>
 </button>

@@ -26,7 +26,7 @@
                                     <div
                                         class="ring-primary ring-offset-base-100 w-36 rounded-full ring-2 ring-offset-2">
                                         <img id="profile-photo"
-                                            src="{{ \Illuminate\Support\Facades\Storage::url($user->profile_photo) }}" />
+                                            src=" {{ $user->profile_photo != '' ? \Illuminate\Support\Facades\Storage::url($user->profile_photo) : '' }}" />
                                     </div>
                                 </div>
                             </article>
@@ -64,7 +64,7 @@
                                 <a href="{{ route('user.index') }}">User List </a>
                             </x-button>
                         @endif
-                        <x-button class="btn-primary" onclick="changePhoto()">
+                        <x-button class="btn-primary" onclick="changePhoto(this)">
                             Update Profile Photo
                         </x-button>
 
@@ -76,13 +76,9 @@
                             Change Password
                         </x-button>
 
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <x-button class="btn-error w-full">
-                                Logout
-                            </x-button>
-                        </form>
+                        <x-button class="btn-error" onclick="logout()">
+                            Logout
+                        </x-button>
                     </div>
                 </div>
             </div>
@@ -93,17 +89,19 @@
     <dialog id="logout_modal" class="modal">
         <div class="modal-box">
             <h3 class="text-error text-lg font-bold">
-                <i class="fas fa-exclamation-triangle"></i>
                 Confirm Logout
             </h3>
             <p class="py-4">Are you sure you want to logout? Any unsaved changes will be lost.</p>
             <div class="modal-action">
                 <form method="dialog">
                     <button class="btn mr-2">Cancel</button>
-                    <button class="btn btn-error" onclick="performLogout()">
-                        <i class="fas fa-sign-out-alt"></i>
+                </form>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <x-button class="btn-error" type="submit">
                         Logout
-                    </button>
+                    </x-button>
                 </form>
             </div>
         </div>
@@ -113,7 +111,6 @@
     <dialog id="profile-modal" class="modal">
         <div class="modal-box w-11/12 max-w-2xl">
             <h3 class="mb-4 text-lg font-bold">
-                <i class="fas fa-user-edit text-primary"></i>
                 Edit Profile
             </h3>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2" id="profile-update-details">
@@ -159,9 +156,9 @@
                 <form method="dialog">
                     <button class="btn mr-2">Cancel</button>
                 </form>
-                <button id="profile-update-btn" class="btn btn-primary" onclick="updateProfile()">
+                <x-button id="profile-update-btn" class="btn-primary" onclick="updateProfile(this)">
                     Save Changes
-                </button>
+                </x-button>
             </div>
         </div>
     </dialog>
@@ -202,9 +199,9 @@
                     <button class="btn mr-2">Cancel</button>
                 </form>
 
-                <button onclick="updatePassword()" class="btn btn-secondary">
+                <x-button onclick="updatePassword(this)" class="btn-secondary">
                     Update Password
-                </button>
+                </x-button>
             </div>
         </div>
     </dialog>
@@ -215,17 +212,13 @@
             document.getElementById('logout_modal').showModal();
         }
 
-        function performLogout() {
-            // Here you would redirect to logout route
-            {{-- // window.location.href = "{{ route('logout') }}"; --}}
-            alert('Redirecting to logout...');
-        }
 
         function editProfile() {
             document.getElementById('profile-modal').showModal();
         }
 
-        async function updateProfile() {
+        async function updateProfile(buttonElement) {
+            const spinner = buttonElement.querySelector('.loading-spinner');
             const name = document.querySelector("#profile-modal input[name='name']");
             const email = document.querySelector("#profile-modal input[name='email']");
             const location = document.querySelector("#profile-modal input[name='location']");
@@ -243,6 +236,8 @@
             }
 
             if (flag) {
+                showSpinner(spinner)
+                buttonElement.disabled = true;
                 url = "{{ route('user.profile') }}";
                 try {
                     const response = await axios.put(url, {
@@ -262,6 +257,9 @@
                 } catch (error) {
                     console.error(error);
                     showErrorToast('Unknow error ocuured');
+                } finally {
+                    hideSpinner(spinner)
+                    buttonElement.disabled = false;
                 }
 
             }
@@ -271,7 +269,9 @@
             document.getElementById('password_modal').showModal();
         }
 
-        function changePhoto() {
+        function changePhoto(buttonElement) {
+            const spinner = buttonElement.querySelector('.loading-spinner');
+
             // Create file input for photo upload
             const input = document.createElement('input');
             input.type = 'file';
@@ -284,6 +284,8 @@
                 formData.append('_token', "{{ csrf_token() }}");
                 formData.append('_method', 'PUT');
                 if (file) {
+                    buttonElement.disabled = true;
+                    showSpinner(spinner)
                     try {
 
                         const response = await axios.post(url, formData, {
@@ -304,13 +306,17 @@
                     } catch (error) {
                         console.log(error);
                         showErrorToast('Unknow error ocuured');
+                    } finally {
+                        hideSpinner(spinner);
+                        buttonElement.disabled = false;
                     }
                 }
             };
             input.click();
         }
 
-        async function updatePassword() {
+        async function updatePassword(buttonElement) {
+            const spinner = buttonElement.querySelector('.loading-spinner');
             const current_password = document.querySelector("#password_modal input[name='current_password']");
             const new_password = document.querySelector("#password_modal input[name='new_password']");
             const confirm_password = document.querySelector("#password_modal input[name='password_confirmation']");
@@ -334,6 +340,8 @@
             }
 
             if (!flag) {
+                buttonElement.disabled = true;
+                showSpinner(spinner)
                 const url = "{{ route('user.profile.password') }}";
                 try {
                     const response = await axios.put(url, {
@@ -349,8 +357,19 @@
                 } catch (error) {
                     console.error(error);
                     showErrorToast('Unknow error ocuured');
+                } finally {
+                    hideSpinner(spinner);
+                    buttonElement.disabled = false;
                 }
             }
+        }
+
+        function showSpinner(spinnerElement) {
+            spinnerElement.classList.remove('hidden');
+        }
+
+        function hideSpinner(spinnerElement) {
+            spinnerElement.classList.add('hidden');
         }
     </script>
 </x-layout>
