@@ -32,6 +32,11 @@ class UserProfileController extends Controller
             $query->latest();
         }
 
+        if ($status = $request->input('status')) {
+            $status == 'true' ? $status = 1 : $status = 0;
+            $query->where('isActive', $status);
+        }
+
         $users = $query->paginate('10');
 
         return view('user.index', compact('users'));
@@ -170,6 +175,7 @@ class UserProfileController extends Controller
             $user = User::findOrFail($id);
             ds($user);
             $user->delete();
+
             return back();
         } catch (Exception $e) {
             return back()->withError('Cannot find the user');

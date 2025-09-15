@@ -7,7 +7,10 @@
         $currentUser = Auth::user();
     @endphp
     <div class="container">
-
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-6">
+              <a href="{{route('user.show')}}" class="badge badge-soft hover:underline">Your Profile</a>
+              <p class="badge badge-soft badge-info">Total Users: {{ $users->total() }}</p>
+        </div>
         <!-- Header -->
         <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <h1 class="text-2xl font-bold">Users</h1>
@@ -114,7 +117,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center text-gray-500">No users found</td>
+                            <td colspan="5" class="text-center text-gray-500">No users found</td>
                         </tr>
                     @endforelse
                 </tbody>

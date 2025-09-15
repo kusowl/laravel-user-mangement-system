@@ -2,8 +2,8 @@
 
 namespace App;
 
-enum UserStatus: int
+enum UserStatus: string
 {
-    case Active = 1;
-    case Disabled = 0;
+    case Active = 'true';
+    case Disabled = 'false';
 }
