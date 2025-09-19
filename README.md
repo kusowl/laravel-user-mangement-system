@@ -7,13 +7,14 @@
 
 ## Features
 
-| Feature                | Description                                                                                     |
-|------------------------|-------------------------------------------------------------------------------------------------|
-| Admin Dashboard        | Admins can view, edit, and manage all users.                                                   |
-| Authentication         | Manual authentication using Laravel's Auth Facade.                                            |
-| Authorization          | Admins have separate permission for user management, implemented using Laravel's Policy and Gate. |
-| Profile Management     | Users can update their profiles, change passwords, and upload avatars.                         |
-| Role-Based Access Control | Assign roles (Admin, User) and permissions to users.                                        |
+| Feature                   | Description                                                                                       |
+|---------------------------|---------------------------------------------------------------------------------------------------|
+| Admin Dashboard           | Admins can view, edit, and manage all users.                                                      |
+| Authentication            | Manual authentication using Laravel's Auth Facade.                                                |
+| Authorization             | Admins have separate permission for user management, implemented using Laravel's Policy and Gate. |
+| Filter and Sort           | Search, Soft and Filter user records in dashboad.                                                 |
+| Profile Management        | Users can update their profiles, change passwords, and upload avatars.                            |
+| Role-Based Access Control | Assign roles (Admin, User) and permissions to users.                                              |
 
 ## Tech Stack
 
