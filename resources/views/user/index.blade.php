@@ -19,7 +19,7 @@
             <form method="GET" action="{{ route('user.index') }}" class="mt-4 flex flex-wrap gap-2 sm:mt-0">
                 <!-- Search -->
                 <input type="text" name="search_key" placeholder="Search by name or email"
-                    value="{{ request('search') }}" class="input input-bordered w-full sm:w-64" />
+                    value="{{ request('search_key') }}" class="input input-bordered w-full sm:w-64" />
 
                 <!-- Role Filter -->
                 <select name="role" class="select select-bordered w-full sm:w-40">

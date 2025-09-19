@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory()
-            ->count(20)
+            ->count(200)
             ->create();
 
         // Assign permissions to random three users in combination
