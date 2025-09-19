@@ -1,5 +1,8 @@
 FROM richarvey/nginx-php-fpm:latest
 
+# Install Node.js and npm on Alpine
+RUN apk add --no-cache nodejs npm
+
 COPY . .
 
 # Image config
@@ -17,5 +20,10 @@ ENV LOG_CHANNEL stderr
 
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
+# Install PHP and JS dependencies, build assets
+RUN cd /var/www/html && \
+    composer install --no-dev && \
+    npm install && \
+    npm run build
 
 CMD ["/start.sh"]
