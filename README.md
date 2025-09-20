@@ -24,7 +24,10 @@
 | v12.0        | v8.4       | v4        | v7.0.4       | v2.11        | v5.1.6   |
 
 ## Showcases
-![User ](resources/images/user-dashboard.webp)
+
+https://github.com/user-attachments/assets/448538e9-6f93-4ddb-b9d8-52097ec2ddb0
+
+![User Dashboard](resources/images/user-dashboard.webp)
 ![Admin Dashboard](resources/images/admin-dashboard.webp)
 
 ## Installation
